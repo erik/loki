@@ -6,6 +6,7 @@
 enum ValueType {
   TYPE_NONE,
   TYPE_NUMERIC,
+  TYPE_STRING
   //...
 };
 
@@ -41,6 +42,25 @@ public:
   double Value();
 private:
   double m_value;
+};
+
+class StringValue : public Value {
+public:
+  StringValue();
+  StringValue(std::string s);
+  virtual ~StringValue();
+
+  void Append(StringValue& other);
+
+  StringValue operator+(StringValue& other);
+  
+  StringValue operator[](int index);
+
+  ValueType Type();
+  std::String ToString();
+
+private:
+  std::string string;
 };
 
 #endif /* _VALUE_H_ */

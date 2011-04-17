@@ -29,6 +29,9 @@ Value* Value::CloneToPtr()
   case TYPE_NUMERIC:
     v = new NumericValue;
     break;
+  case TYPE_STRING:
+    v = new StringValue;
+    break;
   }
 
   *v = *this;
