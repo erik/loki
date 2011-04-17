@@ -18,6 +18,10 @@ public:
   virtual ValueType Type();
   // return a string representation of the object
   virtual std::string ToString();
+
+  // return a pointer to the right type for value v
+  // doinitwrong
+  virtual Value* CloneToPtr();
 };
 
 class NumericValue : public Value {

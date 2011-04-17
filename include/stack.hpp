@@ -11,15 +11,27 @@ public:
   ValueStack();
   virtual ~ValueStack();
 
-  void Push(Value& v);
+  // returns true if the stack has at least 'size' elements false otherwise
+  bool CheckStack(unsigned int size);
 
-  Value& Pop();
-  Value& Peek();
+  // clear the stack completely
+  void Clear();
 
+  // push a value onto the stack
+  void Push(Value v);
+  void Push(NumericValue v);
+
+  // pop the top value off the stack, returning it
+  Value* Pop();
+
+  // return the top value on the stack without popping it off
+  Value* Peek();
+
+  // return the size of the stack
   unsigned int Size();
 
 private:
-  std::stack<Value> m_stack;
+  std::stack<Value*> m_stack;
 };
 
 #endif /* _STACK_H_ */

@@ -9,19 +9,39 @@ ValueStack::~ValueStack()
 {
 }
 
-void ValueStack::Push(Value &v)
+bool ValueStack::CheckStack(unsigned int size)
 {
-  m_stack.push(v);
+  return this->Size() >= size;
 }
 
-Value& ValueStack::Pop()
+void ValueStack::Clear()
 {
-  Value& v = m_stack.top();
+  while(!m_stack.empty()) {
+    delete m_stack.top();
+    m_stack.pop();
+  }
+}
+
+void ValueStack::Push(Value v)
+{
+  Value* val = v.CloneToPtr();
+  m_stack.push(val);
+}
+
+void ValueStack::Push(NumericValue v)
+{
+  Value* val = v.CloneToPtr();
+  m_stack.push(val);
+}
+
+Value* ValueStack::Pop()
+{
+  Value *v = m_stack.top();
   m_stack.pop();
   return v;
 }
 
-Value& ValueStack::Peek()
+Value* ValueStack::Peek()
 {
   return m_stack.top();
 }

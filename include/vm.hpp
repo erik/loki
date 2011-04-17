@@ -4,19 +4,32 @@
 #include "opcodes.hpp"
 #include "value.hpp"
 #include "stack.hpp"
+#include "block.hpp"
 
-#include <vector>
+#include <map>
 
 class VM {
 public:
   VM();
   virtual ~VM();
   
-  Value Interpret(ValueStack& args);
-  
+  // add a new block to the VM
+  void AddBlock(Block& b);
+
+  // fetch a block by name (for calling or whatever)
+  Block *GetBlock(std::string name);
+
+  // returns the stack
+  ValueStack& GetStack();
+
+  // call a named block
+  void Call(std::string name, ValueStack& args);
+
+  // call a passed block
+  void Call(Block& block, ValueStack& args);
+
 private:
-  std::vector<Opcodes> m_opcodes;
-  unsigned int m_instructionPointer;
+  std::map<std::string, Block> m_blocks;
   ValueStack m_stack;
 };
 
