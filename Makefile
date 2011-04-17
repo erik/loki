@@ -1,6 +1,6 @@
-CC      := g++
+CC      := clang++
 IFLAGS 	:= -I include/
-CFLAGS	:= -Wall -Wextra -Wno-unused-parameter -std=c++98 -O3
+CFLAGS	:= -Wall -Wextra -Wno-unused-parameter -std=c++98 -pedantic -O2
 DFLAGS	:= -g -DDEBUG -O0
 
 LNFLAGS	:= -lm

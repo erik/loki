@@ -58,7 +58,8 @@ void Block::Call(ValueStack& args)
     }
     case OP_TOSTRING: {
       Value* v = stack.Pop();
-      std::cout << "Tostring -> " << v->ToString() << std::endl;
+      std::cout << "ToString -> " << v->ToString() << std::endl;
+      stack.Push(StringValue(v->ToString()));
       delete v;
     }
     default:

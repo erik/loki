@@ -18,7 +18,7 @@ public:
   // return the type of the object
   virtual ValueType Type();
   // return a string representation of the object
-  virtual std::string ToString();
+  virtual std::string ToString() const;
 
   // return a pointer to the right type for value v
   // doinitwrong
@@ -32,7 +32,7 @@ public:
   virtual ~NumericValue();
 
   ValueType Type();
-  std::string ToString();
+  std::string ToString() const;
 
   NumericValue operator+(NumericValue& other);
   NumericValue operator-(NumericValue& other);
@@ -47,20 +47,21 @@ private:
 class StringValue : public Value {
 public:
   StringValue();
-  StringValue(std::string s);
+  StringValue(const std::string& s);
   virtual ~StringValue();
 
   void Append(StringValue& other);
+  void Append(std::string& other);
 
   StringValue operator+(StringValue& other);
   
-  StringValue operator[](int index);
+  StringValue operator[](unsigned index);
 
   ValueType Type();
-  std::String ToString();
+  std::string ToString() const;
 
 private:
-  std::string string;
+  std::string m_string;
 };
 
 #endif /* _VALUE_H_ */

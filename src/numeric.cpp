@@ -20,7 +20,7 @@ ValueType NumericValue::Type()
   return TYPE_NUMERIC;
 }
 
-std::string NumericValue::ToString()
+std::string NumericValue::ToString() const
 {
   // TODO: write this
   return "42";

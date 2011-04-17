@@ -13,7 +13,7 @@ ValueType Value::Type()
   return TYPE_NONE;
 }
 
-std::string Value::ToString()
+std::string Value::ToString() const
 {
   return "(NONE)";
 }
@@ -22,19 +22,21 @@ Value* Value::CloneToPtr()
 {
   Value* v = NULL;
   
-  switch(Type()){
+  switch(this->Type()) {
   case TYPE_NONE:
     v = new Value;
+    *v = *this;
     break;
   case TYPE_NUMERIC:
     v = new NumericValue;
+    *v = *this;
     break;
-  case TYPE_STRING:
-    v = new StringValue;
+  case TYPE_STRING: {
+    std::string val = static_cast<StringValue*>(this)->ToString();
+    v = new StringValue(val);
     break;
   }
-
-  *v = *this;
+  }
 
   return v;
 }

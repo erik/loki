@@ -20,6 +20,7 @@ public:
   // push a value onto the stack
   void Push(Value v);
   void Push(NumericValue v);
+  void Push(StringValue v);
 
   // pop the top value off the stack, returning it
   Value* Pop();
