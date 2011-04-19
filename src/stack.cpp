@@ -40,6 +40,12 @@ void ValueStack::Push(StringValue v)
   m_stack.push(val);
 }
 
+void ValueStack::Push(BlockValue v)
+{
+  Value* val = v.CloneToPtr();
+  m_stack.push(val);
+}
+
 Value* ValueStack::Pop()
 {
   Value *v = m_stack.top();

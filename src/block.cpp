@@ -4,12 +4,17 @@
 #include <iostream>
 
 Block::Block()
-  : m_name("noname"), m_vm(NULL)
+  : m_vm(NULL), 
+    m_localScope(NULL), 
+    m_name("noname")
+
 {
 }
 
 Block::Block(std::string name, VM* vm)
-  : m_name(name), m_vm(vm)
+  : m_vm(vm),
+    m_localScope(&vm->GetScope()), 
+    m_name(name)
 {
 }
 
@@ -48,6 +53,21 @@ void Block::Call(ValueStack& args)
       break;
     }
     case OP_LOADBLOCK: {
+      if(!stack.CheckStack(1)) {
+        std::cout << "Expected a name" << std::endl;
+        break;
+      }
+      
+      std::string name = stack.Pop()->ToString();
+
+      Block* b = m_vm->GetBlock(name);
+      if(!b) {
+        std::cout << "Block " << name << " not found!" << std::endl;
+        break;
+      }
+
+      stack.Push(BlockValue(*b));
+
       break;
     }
     case OP_CALL: {
@@ -56,21 +76,123 @@ void Block::Call(ValueStack& args)
       }
       break;
     }
+    case OP_PRINT: {
+      if(!stack.CheckStack(1)) {
+        std::cout << "Stack empty!" << std::endl;
+        break;
+      }
+      Value* v = stack.Pop();
+      std::cout << v->ToString();
+      delete v;
+      break;
+    }
     case OP_TOSTRING: {
       Value* v = stack.Pop();
-      std::cout << "ToString -> " << v->ToString() << std::endl;
       stack.Push(StringValue(v->ToString()));
       delete v;
+    }
+    case OP_SETBINDING: {
+      if(!stack.CheckStack(3)) {
+        std::cout << "Expected three arguments" << std::endl;
+        break;
+      }
+      // TODO: check these casts
+      StringValue* bindingName = static_cast<StringValue*>(stack.Pop());
+      NumericValue* scopeType = static_cast<NumericValue*>(stack.Pop());
+      Value* value = stack.Pop();
+
+      Scope* temp;
+      switch((int)scopeType->Value()) {
+      case 0:
+        temp = &this->GetScope();
+        break;
+      case 1:
+        temp = &m_vm->GetScope();
+        break;
+      }      
+
+      Scope& scope = *temp;
+
+      if(scope.HasBinding(bindingName->ToString(), false)) {
+        delete scope.Get(bindingName->ToString(), false);
+      }
+
+      std::cout << "Setting " << bindingName->ToString() << " to " << value->ToString() << std::endl;
+      scope.Set(bindingName->ToString(), value);
+
+      delete scopeType;
+      delete bindingName;
+
+      break;
+    }
+    case OP_GETBINDING: {
+      // TODO: Check casts
+      StringValue* bindingName = static_cast<StringValue*>(stack.Pop());
+      NumericValue* scopeType  = static_cast<NumericValue*>(stack.Pop());
+      Value* ret = NULL;
+
+      std::string name = bindingName->ToString();
+
+      Scope* temp = NULL;
+      bool searchParent = false;
+
+      switch((int)scopeType->Value()) {
+      case -1:
+        temp = &this->GetScope();
+        searchParent = true;
+        break;
+      case 0:
+        temp = &this->GetScope();
+        break;
+      case 1:
+        temp = &m_vm->GetScope();
+        break;
+      }
+
+      Scope& scope = *temp;
+
+      delete bindingName;
+      delete scopeType;
+      
+      ret = scope.Get(name, searchParent);
+
+      if(ret == NULL) {
+        std::cout << name << " not found in scope" << std::endl;  
+        break;
+      }
+
+      switch(ret->Type()) {
+      case TYPE_NONE:
+        stack.Push(*ret);
+        break;
+      case TYPE_NUMERIC:
+        stack.Push(*static_cast<NumericValue*>(ret));
+        break;
+      case TYPE_STRING:
+        stack.Push(*static_cast<StringValue*>(ret));
+        break;
+      case TYPE_BLOCK:
+        stack.Push(*static_cast<BlockValue*>(ret));
+        break;
+      }
+      
+      delete ret;
+
+      break;
     }
     default:
       break;
     }
   }
+
+  
+
 }
 
 void Block::SetVM(VM* vm)
 {
   m_vm = vm;
+  m_localScope.SetParent(&vm->GetScope());
 }
 
 void Block::SetName(std::string name)
@@ -86,4 +208,9 @@ std::string Block::GetName() const
 unsigned int Block::GetSize()
 {
   return m_opcodes.size();
+}
+
+Scope& Block::GetScope()
+{
+  return m_localScope;
 }

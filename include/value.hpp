@@ -1,12 +1,15 @@
 #ifndef _VALUE_H_
 #define _VALUE_H_
 
+#include "block.hpp"
+
 #include <string>
 
 enum ValueType {
   TYPE_NONE,
   TYPE_NUMERIC,
-  TYPE_STRING
+  TYPE_STRING,
+  TYPE_BLOCK
   //...
 };
 
@@ -62,6 +65,21 @@ public:
 
 private:
   std::string m_string;
+};
+
+class BlockValue : public Value {
+public:
+  BlockValue();
+  BlockValue(Block b);
+  virtual ~BlockValue();
+
+  Block& GetBlock();
+
+  ValueType Type();
+  std::string ToString() const;
+
+private:
+  Block m_block;
 };
 
 #endif /* _VALUE_H_ */

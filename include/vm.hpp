@@ -1,12 +1,16 @@
 #ifndef _VM_H_
 #define _VM_H_
 
-#include "opcodes.hpp"
-#include "value.hpp"
-#include "stack.hpp"
-#include "block.hpp"
-
+#include <string>
 #include <map>
+
+#include "scope.hpp"
+#include "stack.hpp"
+
+class Scope;
+class Value;
+class ValueStack;
+class Block;
 
 class VM {
 public:
@@ -22,6 +26,9 @@ public:
   // returns the stack
   ValueStack& GetStack();
 
+  // returns the global scope
+  Scope& GetScope();
+
   // call a named block
   void Call(std::string name, ValueStack& args);
 
@@ -29,6 +36,7 @@ public:
   void Call(Block& block, ValueStack& args);
 
 private:
+  Scope m_globalScope;
   std::map<std::string, Block> m_blocks;
   ValueStack m_stack;
 };

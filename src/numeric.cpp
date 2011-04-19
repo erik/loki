@@ -1,5 +1,7 @@
 #include "value.hpp"
 
+#include <sstream>
+#include <iostream>
 /* NumericValue */
 NumericValue::NumericValue()
   : m_value(0)
@@ -22,8 +24,8 @@ ValueType NumericValue::Type()
 
 std::string NumericValue::ToString() const
 {
-  // TODO: write this
-  return "42";
+  std::ostringstream oss(std::ostringstream::out);
+  return oss.str();
 }
 
 NumericValue NumericValue::operator+(NumericValue& other)

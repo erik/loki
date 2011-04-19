@@ -2,6 +2,7 @@
 #define _BLOCK_H_
 
 #include "opcodes.hpp"
+#include "scope.hpp"
 
 #include <vector>
 #include <string>
@@ -30,10 +31,12 @@ public:
   // getters
   std::string GetName() const;
   unsigned int GetSize();
+  Scope& GetScope();
 
 private:
-  std::string m_name;
   VM *m_vm;
+  Scope m_localScope;
+  std::string m_name;
   std::vector<Opcode> m_opcodes;
 };
 

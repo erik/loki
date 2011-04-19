@@ -21,6 +21,7 @@ public:
   void Push(Value v);
   void Push(NumericValue v);
   void Push(StringValue v);
+  void Push(BlockValue v);
 
   // pop the top value off the stack, returning it
   Value* Pop();

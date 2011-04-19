@@ -11,6 +11,25 @@
  * a new stack to the block
  */
 
+/**
+ * OP_{SET, GET}BINDING
+ *
+ * SETBINDING:
+ * Expects TOS->NAME[string], TYPE[int], VALUE[any]
+ * VALUE is the value to be set
+ * TYPE is either 0 or 1.
+ * 0 means set at local scope
+ * 1 means set at global scope
+ * NAME is the name of VALUE
+ *
+ * GETBINDING: 
+ * expects TOS->NAME[string], TYPE[int]
+ * TYPE is either -1, 0, or 1, and specifies how NAME will be looked up
+ * -1 means search local scope first, going to global if not found
+ * 0 means search only local scope
+ * 1 means search global scope only, skipping possibly overwritten values in local scope
+ */
+
 enum Opcode {
   OP_NOP        = 0,     // Nothing
 
@@ -21,6 +40,11 @@ enum Opcode {
   OP_CALL          ,     // Calls block
 
   OP_TOSTRING      ,     // Pops top of stack, pushes string representation
+  OP_PRINT         ,     // Pops top of stack, converts to string, prints
+
+  // See note above for next two
+  OP_SETBINDING    ,     // Pops *, int, string
+  OP_GETBINDING    ,     // Pops int, string, push Value
 
   OP_NUM_OPS             // Not an opcode, just the number of opcodes
 };

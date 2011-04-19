@@ -1,8 +1,13 @@
 #include "vm.hpp"
 
+#include "opcodes.hpp"
+#include "value.hpp"
+#include "block.hpp"
+
 #include <iostream>
 
 VM::VM()
+  : m_globalScope(NULL)
 {
 }
 
@@ -29,6 +34,11 @@ Block *VM::GetBlock(std::string name)
 ValueStack& VM::GetStack()
 {
   return m_stack;
+}
+
+Scope& VM::GetScope()
+{
+  return m_globalScope;
 }
 
 void VM::Call(std::string name, ValueStack& args)
