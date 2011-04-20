@@ -26,4 +26,7 @@ clean:
 debug:
 	@$(MAKE) $(MFLAGS) CFLAGS="$(CFLAGS) $(DFLAGS)"
 
-.PHONY= clean
+gcc:
+	@$(MAKE) $(MFLAGS) CC="g++"
+
+.PHONY= clean debug

@@ -142,7 +142,7 @@ void Block::Call(ValueStack& args)
         break;
       }
 
-      Scope* temp;
+      Scope* temp = NULL;
       switch((int)scopeType->Value()) {
       case 0:
         temp = &this->GetScope();
