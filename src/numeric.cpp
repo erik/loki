@@ -24,7 +24,16 @@ ValueType NumericValue::Type()
 
 std::string NumericValue::ToString() const
 {
-  std::ostringstream oss(std::ostringstream::out);
+  std::ostringstream oss;
+  oss << m_value;
+  return oss.str();
+}
+
+std::string NumericValue::Inspect() const
+{
+  std::ostringstream oss;
+  oss << "(NumericValue)";
+  oss << m_value;
   return oss.str();
 }
 

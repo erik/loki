@@ -4,6 +4,7 @@
 #include "block.hpp"
 
 #include <string>
+#include <sstream>
 
 enum ValueType {
   TYPE_NONE,
@@ -18,10 +19,17 @@ public:
   Value();
   virtual ~Value();
 
+  // returns whether this is an instance of 'type'
+  bool CheckType(ValueType type);
+
   // return the type of the object
   virtual ValueType Type();
+ 
   // return a string representation of the object
   virtual std::string ToString() const;
+
+  // return a debug representation of object
+  virtual std::string Inspect() const;
 
   // return a pointer to the right type for value v
   // doinitwrong
@@ -36,6 +44,7 @@ public:
 
   ValueType Type();
   std::string ToString() const;
+  std::string Inspect() const;
 
   NumericValue operator+(NumericValue& other);
   NumericValue operator-(NumericValue& other);
@@ -62,6 +71,7 @@ public:
 
   ValueType Type();
   std::string ToString() const;
+  std::string Inspect() const;
 
 private:
   std::string m_string;
@@ -77,6 +87,7 @@ public:
 
   ValueType Type();
   std::string ToString() const;
+  std::string Inspect() const;
 
 private:
   Block m_block;

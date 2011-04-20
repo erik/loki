@@ -8,21 +8,25 @@ int main(int argc, char** argv) {
   VM vm;
 
   ValueStack& stack = vm.GetStack();
-  stack.Push(NumericValue(-1));
-  stack.Push(StringValue("BIND"));
 
-  stack.Push(StringValue("VALUE\n"));
-  stack.Push(NumericValue(1));
-  stack.Push(StringValue("BIND"));
+  // other
+  stack.Push(StringValue("Hi, i'm some other block!\n"));
 
+  Block block_other("other", &vm);
+  block_other.AddInstruction(OP_PRINT);
+
+  // main
   Block block_main("main", &vm);
-  block_main.AddInstruction(OP_NOP);
-  block_main.AddInstruction(OP_SETBINDING);
-  block_main.AddInstruction(OP_GETBINDING);
-  block_main.AddInstruction(OP_PRINT);
+
+  stack.Push(NumericValue(0));
+  stack.Push(StringValue("other"));
+
+  block_main.AddInstruction(OP_LOADBLOCK);
+  block_main.AddInstruction(OP_CALL);
 
 
   vm.AddBlock(block_main);
+  vm.AddBlock(block_other);
 
   ValueStack args;
 

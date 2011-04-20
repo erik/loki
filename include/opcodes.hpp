@@ -37,9 +37,11 @@ enum Opcode {
   OP_CLEARSTACK    ,     // Clears the stack
 
   OP_LOADBLOCK     ,     // Pops string off stack naming Block, pushes corresponding block as lambda or nil 
-  OP_CALL          ,     // Calls block
+  OP_CALL          ,     // Calls block, see note
 
   OP_TOSTRING      ,     // Pops top of stack, pushes string representation
+  OP_INSPECT       ,     // Pops top of stack, pushes a debug string representation
+
   OP_PRINT         ,     // Pops top of stack, converts to string, prints
 
   // See note above for next two

@@ -8,6 +8,11 @@ Value::~Value()
 {
 }
 
+bool Value::CheckType(ValueType type)
+{
+  return this->Type() == type;
+}
+
 ValueType Value::Type()
 {
   return TYPE_NONE;
@@ -16,6 +21,15 @@ ValueType Value::Type()
 std::string Value::ToString() const
 {
   return "(NONE)";
+}
+
+std::string Value::Inspect() const
+{
+  std::ostringstream stream;
+  stream << ToString();
+  stream << "@";
+  stream << (void*)this;
+  return stream.str();
 }
 
 Value* Value::CloneToPtr()

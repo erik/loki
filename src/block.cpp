@@ -71,9 +71,36 @@ void Block::Call(ValueStack& args)
       break;
     }
     case OP_CALL: {
-      if(!stack.CheckStack(1)) {
-        std::cout << "Expected number of args" << std::endl;
+      if(!stack.CheckStack(2)) {
+        std::cout << "Expected block and number of args" << std::endl;
+        break;
       }
+
+      BlockValue* block     = static_cast<BlockValue*>(stack.Pop());
+      NumericValue* numArgs = static_cast<NumericValue*>(stack.Pop());
+
+      if(!numArgs->CheckType(TYPE_NUMERIC)) {
+        std::cout << "Expected a numeric, got " << block->Inspect() << std::endl;
+        break;
+      }
+
+      if(!block->CheckType(TYPE_BLOCK)) {
+        std::cout << "Expected a block, got " << block->Inspect() << std::endl;
+        break;
+      }
+      
+      if(!stack.CheckStack((int)numArgs->Value())) {
+        std::cout << "Not enough args on the stack! (needed " << (int)numArgs->Value() << ")"
+                  << std::endl;
+        break;
+      }
+
+      // TODO: copy over required args
+
+      ValueStack args;
+      
+      block->GetBlock().Call(args);
+
       break;
     }
     case OP_PRINT: {
@@ -90,16 +117,30 @@ void Block::Call(ValueStack& args)
       Value* v = stack.Pop();
       stack.Push(StringValue(v->ToString()));
       delete v;
+      break;
+    }
+    case OP_INSPECT: {
+      Value* v = stack.Pop();
+      stack.Push(StringValue(v->Inspect()));
+      delete v;
+      break;
     }
     case OP_SETBINDING: {
       if(!stack.CheckStack(3)) {
         std::cout << "Expected three arguments" << std::endl;
         break;
       }
-      // TODO: check these casts
       StringValue* bindingName = static_cast<StringValue*>(stack.Pop());
       NumericValue* scopeType = static_cast<NumericValue*>(stack.Pop());
       Value* value = stack.Pop();
+
+      if(!bindingName->CheckType(TYPE_STRING)) {
+        std::cout << "Expected a string, got " << bindingName->Inspect() << std::endl;
+        break;
+      } else if(!scopeType->CheckType(TYPE_NUMERIC)) {
+        std::cout << "Expected a number, got " << scopeType->Inspect() << std::endl;
+        break;
+      }
 
       Scope* temp;
       switch((int)scopeType->Value()) {
@@ -126,10 +167,17 @@ void Block::Call(ValueStack& args)
       break;
     }
     case OP_GETBINDING: {
-      // TODO: Check casts
       StringValue* bindingName = static_cast<StringValue*>(stack.Pop());
       NumericValue* scopeType  = static_cast<NumericValue*>(stack.Pop());
       Value* ret = NULL;
+
+      if(!bindingName->CheckType(TYPE_STRING)) {
+        std::cout << "Expected a string, got " << bindingName->Inspect() << std::endl;
+        break;
+      } else if(!scopeType->CheckType(TYPE_NUMERIC)) {
+        std::cout << "Expected a number, got " << scopeType->Inspect() << std::endl;
+        break;
+      }
 
       std::string name = bindingName->ToString();
 
@@ -184,6 +232,7 @@ void Block::Call(ValueStack& args)
       break;
     }
   }
+  return;
 }
 
 void Block::SetVM(VM* vm)

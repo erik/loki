@@ -47,3 +47,8 @@ std::string StringValue::ToString() const
 {
   return m_string;
 }
+
+std::string StringValue::Inspect() const
+{
+  return "(StringValue)\"" + m_string + "\"";
+}
