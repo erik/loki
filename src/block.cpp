@@ -184,9 +184,6 @@ void Block::Call(ValueStack& args)
       break;
     }
   }
-
-  
-
 }
 
 void Block::SetVM(VM* vm)

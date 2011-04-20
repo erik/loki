@@ -4,7 +4,7 @@ CFLAGS	:= -Wall -Wextra -Wno-unused-parameter -std=c++98 -pedantic -O2
 DFLAGS	:= -g -DDEBUG -O0
 
 LNFLAGS	:= -lm
-EXE 	:= drit
+EXE 	:= loki
 
 .SUFFIXES=.cpp
 
