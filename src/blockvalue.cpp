@@ -1,12 +1,13 @@
 #include "value.hpp"
 
 BlockValue::BlockValue()
+  : m_block(NULL)
 {
 }
 
-BlockValue::BlockValue(Block b)
-  : m_block(b)
+BlockValue::BlockValue(Block& b)
 {
+  m_block = &b;
 }
 
 BlockValue::~BlockValue()
@@ -15,7 +16,7 @@ BlockValue::~BlockValue()
 
 Block& BlockValue::GetBlock()
 {
-  return m_block;
+  return *m_block;
 }
 
 ValueType BlockValue::Type()
@@ -26,7 +27,7 @@ ValueType BlockValue::Type()
 std::string BlockValue::ToString() const
 {
   std::ostringstream stream;
-  stream << m_block.GetName();
+  stream << m_block->GetName();
   stream << "@";
   stream << (void*)&m_block;
   return stream.str();

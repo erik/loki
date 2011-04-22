@@ -59,7 +59,7 @@ private:
 class StringValue : public Value {
 public:
   StringValue();
-  StringValue(const std::string& s);
+  StringValue(const std::string s);
   virtual ~StringValue();
 
   void Append(StringValue& other);
@@ -80,7 +80,7 @@ private:
 class BlockValue : public Value {
 public:
   BlockValue();
-  BlockValue(Block b);
+  BlockValue(Block& b);
   virtual ~BlockValue();
 
   Block& GetBlock();
@@ -90,7 +90,7 @@ public:
   std::string Inspect() const;
 
 private:
-  Block m_block;
+  Block* m_block;
 };
 
 #endif /* _VALUE_H_ */

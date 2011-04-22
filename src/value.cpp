@@ -48,8 +48,7 @@ Value* Value::CloneToPtr()
     break;
 
   case TYPE_STRING: {
-    std::string val = static_cast<StringValue*>(this)->ToString();
-    v = new StringValue(val);
+    v = new StringValue(this->ToString());
     break;
   }
 
@@ -57,7 +56,6 @@ Value* Value::CloneToPtr()
     Block& b = static_cast<BlockValue*>(this)->GetBlock();
     v = new BlockValue(b);
   }
-
   }
 
   return v;

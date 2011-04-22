@@ -58,7 +58,16 @@ void Block::Call(ValueStack& args)
         break;
       }
       
-      std::string name = stack.Pop()->ToString();
+
+      StringValue* s = static_cast<StringValue*>(stack.Pop());
+      if(!s->CheckType(TYPE_STRING)) {
+        std::cout << "Expected a string, got " << s->Inspect() << std::endl;
+        break;
+      }
+
+      std::string name = s->ToString();
+
+      delete s;
 
       Block* b = m_vm->GetBlock(name);
       if(!b) {
@@ -80,7 +89,7 @@ void Block::Call(ValueStack& args)
       NumericValue* numArgs = static_cast<NumericValue*>(stack.Pop());
 
       if(!numArgs->CheckType(TYPE_NUMERIC)) {
-        std::cout << "Expected a numeric, got " << block->Inspect() << std::endl;
+        std::cout << "Expected a numeric, got " << numArgs->Inspect() << std::endl;
         break;
       }
 
@@ -88,19 +97,21 @@ void Block::Call(ValueStack& args)
         std::cout << "Expected a block, got " << block->Inspect() << std::endl;
         break;
       }
-      
-      if(!stack.CheckStack((int)numArgs->Value())) {
+
+      int num = static_cast<int>(numArgs->Value());      
+      if(!stack.CheckStack(num)) {
         std::cout << "Not enough args on the stack! (needed " << (int)numArgs->Value() << ")"
                   << std::endl;
         break;
       }
-
-      // TODO: copy over required args
-
+      
       ValueStack args;
       
+      // TODO: push args onto new stack            
       block->GetBlock().Call(args);
 
+      delete block;
+      delete numArgs;
       break;
     }
     case OP_PRINT: {

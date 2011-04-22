@@ -5,7 +5,7 @@ StringValue::StringValue()
 {
 }
 
-StringValue::StringValue(const std::string& s)
+StringValue::StringValue(const std::string s)
   : m_string(s)
 {
 }

@@ -34,5 +34,7 @@ int main(int argc, char** argv) {
 
   stack.Clear();
 
+  stack.Clear();
+
   return 0;
 }

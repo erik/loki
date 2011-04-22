@@ -20,7 +20,7 @@ void VM::AddBlock(Block& b)
   m_blocks[b.GetName()] = b;
 }
 
-Block *VM::GetBlock(std::string name)
+Block* VM::GetBlock(std::string name)
 {
   std::map<std::string, Block>::iterator it = m_blocks.find(name);
   

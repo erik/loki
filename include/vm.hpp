@@ -21,7 +21,7 @@ public:
   void AddBlock(Block& b);
 
   // fetch a block by name (for calling or whatever)
-  Block *GetBlock(std::string name);
+  Block* GetBlock(std::string name);
 
   // returns the stack
   ValueStack& GetStack();
@@ -34,6 +34,15 @@ public:
 
   // call a passed block
   void Call(Block& block, ValueStack& args);
+
+  // set a global value
+  void SetGlobal(std::string name, Value* val);
+
+  // get a global value
+  Value* GetGlobal(std::string name);
+
+  // load a new module into the VM
+  //  void LoadModule(Module& m);
 
 private:
   Scope m_globalScope;
