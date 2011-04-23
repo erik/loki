@@ -25,7 +25,7 @@ protected:
   static void AddBlock(Block b);
 
   static Module* m_instance;
-  std::vector<Block> m_blocks;
+  static std::vector<Block> m_blocks;
 };
 
 #endif /* _MODULE_H_ */

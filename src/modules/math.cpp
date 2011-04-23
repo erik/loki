@@ -16,6 +16,7 @@ Module* MathModule::Instance()
 
 MathModule::~MathModule()
 {
+  m_blocks.clear();
   delete m_instance;
 }
 

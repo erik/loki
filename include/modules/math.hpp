@@ -10,9 +10,6 @@ public:
   virtual ~MathModule();
 
   static Module* Instance();
-
-protected:
-  std::vector<Block> m_blocks;
 };
 
 namespace Math {

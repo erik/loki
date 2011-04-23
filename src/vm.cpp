@@ -34,6 +34,11 @@ Block* VM::GetBlock(std::string name)
   return &it->second;
 }
 
+std::map<std::string, Block> VM::GetBlocks()
+{
+  return m_blocks;
+}
+
 ValueStack& VM::GetStack()
 {
   return m_stack;
@@ -108,7 +113,17 @@ void VM::LoadModule(Module* m)
   m->Install(this);
 }
 
+void VM::UnloadModule(Module* m)
+{
+  m->Uninstall(this);
+}
+
 void VM::OpenLibraries()
 {
   this->LoadModule(MathModule::Instance());
+}
+
+void VM::CloseLibraries()
+{
+  this->UnloadModule(MathModule::Instance());
 }

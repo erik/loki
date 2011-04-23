@@ -28,6 +28,8 @@ int main(int argc, char** argv) {
 
   vm.Call("main", args);
 
+  vm.CloseLibraries();
+
   stack.Clear();
 
   return 0;

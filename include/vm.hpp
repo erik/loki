@@ -24,6 +24,9 @@ public:
   // fetch a block by name (for calling or whatever)
   Block* GetBlock(std::string name);
 
+  // returns the map of blocks
+  std::map<std::string, Block> GetBlocks();
+
   // returns the stack
   ValueStack& GetStack();
 
@@ -48,8 +51,14 @@ public:
   // load a new module into the VM
   void LoadModule(Module* m);
 
+  // unload a module
+  void UnloadModule(Module* m);
+
   // open all the standard modules
   void OpenLibraries();
+
+  // close all standard libraries
+  void CloseLibraries();
 
 private:
   void SetGlobal(std::string name, Value* v);
