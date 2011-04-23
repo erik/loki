@@ -6,7 +6,9 @@
 Block::Block()
   : m_vm(NULL), 
     m_localScope(NULL), 
-    m_name("noname")
+    m_name("noname"),
+    m_function(NULL),
+    m_internal(false)
 
 {
 }
@@ -14,7 +16,18 @@ Block::Block()
 Block::Block(std::string name, VM* vm)
   : m_vm(vm),
     m_localScope(&vm->GetScope()), 
-    m_name(name)
+    m_name(name),
+    m_function(NULL),
+    m_internal(false)
+{
+}
+
+Block::Block(std::string name, block_func fcn, VM* vm)
+  : m_vm(vm),
+    m_localScope(&vm->GetScope()), 
+    m_name(name),
+    m_function(fcn),
+    m_internal(true)
 {
 }
 
@@ -29,6 +42,10 @@ void Block::AddInstruction(Opcode op)
 
 void Block::Call(ValueStack& args)
 {
+  if(m_internal) {
+    return m_function(m_vm, args);
+  }
+
   unsigned size = this->GetSize();
   ValueStack& stack = m_vm->GetStack();
 
@@ -246,6 +263,11 @@ void Block::Call(ValueStack& args)
   return;
 }
 
+bool Block::IsInternal()
+{
+  return m_internal;
+}
+
 void Block::SetVM(VM* vm)
 {
   m_vm = vm;
@@ -255,6 +277,12 @@ void Block::SetVM(VM* vm)
 void Block::SetName(std::string name)
 {
   m_name = name;
+}
+
+void Block::SetFunction(block_func fcn)
+{
+  m_function = fcn;
+  m_internal = true;
 }
 
 std::string Block::GetName() const 

@@ -3,6 +3,9 @@
 #include "opcodes.hpp"
 #include "value.hpp"
 #include "block.hpp"
+#include "module.hpp"
+
+#include "modules/math.hpp"
 
 #include <iostream>
 
@@ -59,4 +62,53 @@ void VM::Call(std::string name, ValueStack& args)
 void VM::Call(Block& b, ValueStack& args)
 {
   return b.Call(args);
+}
+
+void VM::SetGlobal(std::string name, Value val)
+{
+  SetGlobal(name, &val);
+}
+
+void VM::SetGlobal(std::string name, StringValue val)
+{
+  SetGlobal(name, &val);
+}
+
+void VM::SetGlobal(std::string name, NumericValue val)
+{
+  SetGlobal(name, &val);
+}
+
+void VM::SetGlobal(std::string name, BlockValue val)
+{
+  SetGlobal(name, &val);
+}
+
+void VM::SetGlobal(std::string name, Value* val)
+{
+  Value *v = m_globalScope.Get(name);
+  Value* temp = val->CloneToPtr();
+
+  if(v != NULL) {
+    delete v;
+  }
+
+  m_globalScope.Set(name, temp);
+}
+
+Value* VM::GetGlobal(std::string name)
+{
+  Value* v = m_globalScope.Get(name);
+  
+  return v;
+}
+
+void VM::LoadModule(Module* m)
+{
+  m->Install(this);
+}
+
+void VM::OpenLibraries()
+{
+  this->LoadModule(MathModule::Instance());
 }
