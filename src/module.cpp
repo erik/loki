@@ -28,8 +28,10 @@ void Module::Install(VM* vm)
 void Module::Uninstall(VM* vm)
 {
   std::map<std::string, Block> map = vm->GetBlocks();
+
   for(unsigned i = 0; i < m_blocks.size(); ++i) {
     std::map<std::string, Block>::iterator it = map.find(m_blocks[i].GetName());
+
     if(it != map.end()) {
       map.erase(m_blocks[i].GetName());
     }

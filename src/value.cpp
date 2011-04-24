@@ -1,6 +1,6 @@
 #include "value.hpp"
 
-Value::Value() 
+Value::Value()
 {
 }
 
@@ -18,12 +18,12 @@ ValueType Value::Type()
   return TYPE_NONE;
 }
 
-std::string Value::ToString() const
+std::string Value::ToString()
 {
   return "(NONE)";
 }
 
-std::string Value::Inspect() const
+std::string Value::Inspect()
 {
   std::ostringstream stream;
   stream << ToString();
@@ -36,7 +36,7 @@ Value* Value::CloneToPtr()
 {
   Value* v = NULL;
   
-  switch(this->Type()) {
+  switch(Type()) {
 
   case TYPE_NONE:
     v = new Value;
@@ -55,6 +55,13 @@ Value* Value::CloneToPtr()
   case TYPE_BLOCK: {
     Block& b = static_cast<BlockValue*>(this)->GetBlock();
     v = new BlockValue(b);
+    break;
+  }
+
+  case TYPE_ARRAY: {
+    ArrayValue* a = static_cast<ArrayValue*>(this);
+    v = new ArrayValue(*a);
+    break;
   }
   }
 

@@ -5,12 +5,13 @@
 
 #include <string>
 #include <sstream>
-
+#include <iostream>
 enum ValueType {
   TYPE_NONE,
   TYPE_NUMERIC,
   TYPE_STRING,
-  TYPE_BLOCK
+  TYPE_BLOCK,
+  TYPE_ARRAY
   //...
 };
 
@@ -26,10 +27,10 @@ public:
   virtual ValueType Type();
  
   // return a string representation of the object
-  virtual std::string ToString() const;
+  virtual std::string ToString();
 
   // return a debug representation of object
-  virtual std::string Inspect() const;
+  virtual std::string Inspect();
 
   // return a pointer to the right type for value v
   // doinitwrong
@@ -42,9 +43,9 @@ public:
   NumericValue(double);
   virtual ~NumericValue();
 
-  ValueType Type();
-  std::string ToString() const;
-  std::string Inspect() const;
+  virtual ValueType Type();
+  std::string ToString();
+  std::string Inspect();
 
   NumericValue operator+(NumericValue& other);
   NumericValue operator-(NumericValue& other);
@@ -70,8 +71,8 @@ public:
   StringValue operator[](unsigned index);
 
   ValueType Type();
-  std::string ToString() const;
-  std::string Inspect() const;
+  std::string ToString();
+  std::string Inspect();
 
 private:
   std::string m_string;
@@ -86,11 +87,34 @@ public:
   Block& GetBlock();
 
   ValueType Type();
-  std::string ToString() const;
-  std::string Inspect() const;
+  std::string ToString();
+  std::string Inspect();
 
 private:
   Block* m_block;
+};
+
+class ArrayValue : public Value {
+public:
+  ArrayValue();
+  virtual ~ArrayValue();
+
+  // get a value specified by key, or NULL
+  virtual Value* Get(Value& key);
+
+  // ditto
+  virtual Value* operator[](Value& key);
+
+  // set key to value
+  void Set(Value& key, Value& val);
+  virtual void Set(Value* key, Value* val);
+
+  ValueType Type();
+  std::string ToString();
+  std::string Inspect();
+
+private:
+  std::map<std::string, std::pair<Value*, Value*> > m_map;
 };
 
 #endif /* _VALUE_H_ */

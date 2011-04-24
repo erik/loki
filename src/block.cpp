@@ -250,6 +250,9 @@ void Block::Call(ValueStack& args)
       case TYPE_BLOCK:
         stack.Push(*static_cast<BlockValue*>(ret));
         break;
+      case TYPE_ARRAY:
+        stack.Push(*static_cast<ArrayValue*>(ret));
+        break;
       }
       
       delete ret;

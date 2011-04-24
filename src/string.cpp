@@ -43,12 +43,12 @@ ValueType StringValue::Type()
   return TYPE_STRING;
 }
 
-std::string StringValue::ToString() const
+std::string StringValue::ToString()
 {
   return m_string;
 }
 
-std::string StringValue::Inspect() const
+std::string StringValue::Inspect()
 {
   return "(StringValue)\"" + m_string + "\"";
 }

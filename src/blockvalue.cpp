@@ -24,7 +24,7 @@ ValueType BlockValue::Type()
   return TYPE_BLOCK;
 }
 
-std::string BlockValue::ToString() const
+std::string BlockValue::ToString()
 {
   std::ostringstream stream;
   stream << m_block->GetName();
@@ -33,7 +33,7 @@ std::string BlockValue::ToString() const
   return stream.str();
 }
 
-std::string BlockValue::Inspect() const
+std::string BlockValue::Inspect()
 {
   std::ostringstream stream;
   stream << "(BlockValue)";

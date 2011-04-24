@@ -22,14 +22,14 @@ ValueType NumericValue::Type()
   return TYPE_NUMERIC;
 }
 
-std::string NumericValue::ToString() const
+std::string NumericValue::ToString()
 {
   std::ostringstream oss;
   oss << m_value;
   return oss.str();
 }
 
-std::string NumericValue::Inspect() const
+std::string NumericValue::Inspect()
 {
   std::ostringstream oss;
   oss << "(NumericValue)";
